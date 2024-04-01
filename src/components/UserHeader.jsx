@@ -37,7 +37,9 @@ function UserHeader() {
               Mark Zuckerburg
             </Text>
             <Flex gap={2} alignItems={"center"}>
-              <Text fontSize={"sm"}>markzuckerbug</Text>
+              <Text fontSize={{  base:"xs",
+              md:"sm",
+              lg:"md",}}>markzuckerbug</Text>
               <Text
                 fontSize={"xs"}
                 bg={"gray.dark"}
@@ -50,10 +52,24 @@ function UserHeader() {
             </Flex>
           </Box>
           <Box>
-            <Avatar name="Mark Zuckerberg" src="/zuck-avatar.png" size={"xl"} />
+            <Avatar name="Mark Zuckerberg" src="/zuck-avatar.png" size={{
+              base:"md",
+              md:"lg",
+              lg:"xl",
+              xl:"2xl",
+              "2xl":"3xl",
+              "3xl":"4xl",
+              "4xl":"5xl",
+              "5xl":"6xl",
+              "6xl":"7xl",
+            }} />
           </Box>
         </Flex>
-        <Text>Co-founder,excecutive,chairman and CEO of Meta platforms.</Text>
+        <Text fontSize={{ base:"xs",
+              md:"sm",
+              lg:"md",
+
+        }}>Co-founder,excecutive,chairman and CEO of Meta platforms.</Text>
         <Flex w={"full"} justifyContent={"space-between"}>
           <Flex gap={2} alignItems={"center"}>
             <Text color={"gray.light"}>3.2k followers</Text>
@@ -65,9 +81,9 @@ function UserHeader() {
               <FaInstagram size={24} cursor="pointer" />
             </Box>
             <Box className="icon-container">
-              <Menu>
+              <Menu >
                 <MenuButton>
-                  <HiDotsHorizontal size={24} cursor="pointer" />
+                  <HiDotsHorizontal size={24} cursor="pointer"  />
                 </MenuButton>
                 <Portal>
                   <MenuList bg={"gray.dark"}>

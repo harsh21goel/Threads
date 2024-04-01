@@ -6,12 +6,12 @@ const Actions = ({ liked,setliked }) => {
 
 	return (
 		
-			<Flex gap={3} my={2} onClick={(e) => e.preventDefault()}>
+			<Flex gap={1} my={1} onClick={(e) => e.preventDefault()}>
 				<svg
 					aria-label='Like'
 					color={liked ? "rgb(237, 73, 86)" : ""}
 					fill={liked ? "rgb(237, 73, 86)" : "transparent"}
-					height='19'
+					height='17'
 					role='img'
 					viewBox='0 0 24 22'
 					width='20'
@@ -28,7 +28,7 @@ const Actions = ({ liked,setliked }) => {
 					aria-label='Comment'
 					color=''
 					fill=''
-					height='20'
+					height='17'
 					role='img'
 					viewBox='0 0 24 24'
 					width='20'
@@ -62,7 +62,7 @@ const RepostSVG = () => {
 			aria-label='Repost'
 			color='currentColor'
 			fill='currentColor'
-			height='20'
+			height='17'
 			role='img'
 			viewBox='0 0 24 24'
 			width='20'
@@ -82,7 +82,7 @@ const ShareSVG = () => {
 			aria-label='Share'
 			color=''
 			fill='rgb(243, 245, 247)'
-			height='20'
+			height='17'
 			role='img'
 			viewBox='0 0 24 24'
 			width='20'

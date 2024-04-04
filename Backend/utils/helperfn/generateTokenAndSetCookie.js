@@ -9,7 +9,7 @@ const genrateTokenAndSetCookie=(userId,res)=>{
 })
 
     res.cookie("jwt",token,{
-        maxAge:15*24*60*60,
+        maxAge:15*24*60*60*60,
         httpOnly:true,
         sameSite:"strict",
     })

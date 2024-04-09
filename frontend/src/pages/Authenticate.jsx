@@ -6,7 +6,7 @@ import LoginCard from "../components/LoginCard"
 
 function Authenticate() {   
     const authScreenState=useRecoilValue(authScreenatom)
-    // console.log(authScreenState);
+    console.log(authScreenState);
   return (
   <>
   {authScreenState === "login"? <LoginCard/>:<SignupCard/>}

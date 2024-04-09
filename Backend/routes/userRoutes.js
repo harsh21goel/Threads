@@ -9,7 +9,7 @@ router.post("/signup",signupUser)
 router.post("/login",loginUser)
 router.post("/logout",logoutUser)
 router.post("/follow/:id",protectRoute, followUnfollow)
-router.post("/update/:id",protectRoute, updateUserProfile)
+router.put("/update/:id",protectRoute, updateUserProfile)
 
 export default router
 

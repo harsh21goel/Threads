@@ -12,12 +12,12 @@ import {
     Center,
   } from '@chakra-ui/react'
 import { useState,useRef } from 'react'
-import {  useRecoilValue } from 'recoil'
+import {  useRecoilState } from 'recoil'
 import userAtom from '../atoms/userAtom'
   import useImagepreview from "../Hooks/useImagepreview"
   import useshowToast from "../Hooks/useshowToast"
   export default function UpdateProfilePage() {
-    const user=useRecoilValue(userAtom)
+    const [user,setuser]=useRecoilState(userAtom)
     const fileref =useRef(null)
     const showToast=useshowToast()
     const {handleImageChange,imageUrl}=useImagepreview()
@@ -53,7 +53,7 @@ import userAtom from '../atoms/userAtom'
           return
         }
         showToast("success","profile updated successfully","success")
-        // setuser(data)
+        setuser(data)
         localStorage.setItem("users-threads",JSON.stringify(data))
       } catch (error) {
         showToast("Error",error.message, "error")

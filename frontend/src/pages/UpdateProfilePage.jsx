@@ -22,6 +22,7 @@ import userAtom from '../atoms/userAtom'
     const showToast=useshowToast()
     const {handleImageChange,imageUrl}=useImagepreview()
     // console.log(user);
+    const [updating, setupdating] = useState(false)
     const [inputs, setinputs] = useState({
         name: user.name,
         username: user.username,
@@ -34,6 +35,8 @@ import userAtom from '../atoms/userAtom'
 
     const handleSubmit=async(e)=>{
       e.preventDefault()
+      if(updating) return
+      setupdating(true)
       try {
         const res =await fetch(`/api/users/update/${user._id}`,{
           method:"PUT",
@@ -53,11 +56,14 @@ import userAtom from '../atoms/userAtom'
           return
         }
         showToast("success","profile updated successfully","success")
+        console.log(data);
         setuser(data)
         localStorage.setItem("users-threads",JSON.stringify(data))
       } catch (error) {
         showToast("Error",error.message, "error")
         console.log(error);
+      }finally{
+        setupdating(false)
       }
     }
     return (
@@ -97,17 +103,17 @@ import userAtom from '../atoms/userAtom'
               placeholder="Jhon doe"
               _placeholder={{ color: 'gray.500' }}
               type="text"
-              value={inputs.name}
+              value={inputs.name|| ""}
               onChange={(e)=>setinputs({...inputs, name:e.target.value})}
             />
           </FormControl>
-          <FormControl  _readOnly>
+          <FormControl  >
             <FormLabel>User name</FormLabel>
             <Input
               placeholder="Jhon doe"
               _placeholder={{ color: 'gray.500' }}
               type="text"
-              value={inputs.username}
+              value={inputs.username||""}
               onChange={(e)=>setinputs({...inputs, username:e.target.value})}
             />
           </FormControl>
@@ -117,7 +123,7 @@ import userAtom from '../atoms/userAtom'
               placeholder="your-email@example.com"
               _placeholder={{ color: 'gray.500' }}
               type="email"
-              value={inputs.email}
+              value={inputs.email|| ""}
               onChange={(e)=>setinputs({...inputs, email:e.target.value})}
             />
           </FormControl>
@@ -127,7 +133,7 @@ import userAtom from '../atoms/userAtom'
               placeholder="Your bio..."
               _placeholder={{ color: 'gray.500' }}
               type="text"
-              value={inputs.bio}
+              value={inputs.bio|| ""}
               onChange={(e)=>setinputs({...inputs, bio:e.target.value})}
             />
           </FormControl>
@@ -137,7 +143,7 @@ import userAtom from '../atoms/userAtom'
               placeholder="password"
               _placeholder={{ color: 'gray.500' }}
               type="password"
-              value={inputs.password}
+              value={inputs.password|| ""}
               onChange={(e)=>setinputs({...inputs, password:e.target.value})}
             />
           </FormControl>
@@ -159,6 +165,7 @@ import userAtom from '../atoms/userAtom'
                 bg: 'green.500',
               }}
               type='submit'
+              isLoading={updating}
               >
               Submit
             </Button>

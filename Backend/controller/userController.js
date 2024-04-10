@@ -163,7 +163,8 @@ const updateUserProfile=async (req, res) => {
         user.bio= bio || user.bio;
 
         user= await user.save();
-        res.status(200).json({message:"User updated successfully",user})
+        user.password=null
+        res.status(200).json({user})
 
 
 

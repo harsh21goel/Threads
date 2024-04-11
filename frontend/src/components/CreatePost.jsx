@@ -22,6 +22,7 @@ function CreatePost() {
   const [postText,setpostText] = useState("")
   const {handleImageChange,imageUrl,setimageUrl}=useImagePreview()
   const [remainingChar, setremainingChar] = useState(MaxChar)
+  const [loading, setloading] = useState(false)
   const user=useRecoilValue(userAtom)
   const showToast = useshowToast()
 
@@ -39,8 +40,10 @@ function CreatePost() {
     }
   }
   const handleCreatePost= async()=>{
+    setloading(true)
    try {
-    const res=await fetch("/api/post/create",{
+
+    const res=await fetch("/api/posts/create",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
@@ -48,14 +51,21 @@ function CreatePost() {
         body:JSON.stringify({postedBy:user._id,text:postText,img:imageUrl})
     })
     const data= await res.json()
+    // console.log(data);
     if(data.error){
         showToast("Error",data.error,"error")
         return
     }
     showToast("success","post created successfully","success")
+    onClose()
+    setpostText("")
+    setimageUrl("")
+
    } catch (error) {
     showToast("Error",error,"error")
     
+   }finally{
+    setloading(false)
    }
 
   }
@@ -127,7 +137,7 @@ function CreatePost() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleCreatePost}>
+            <Button colorScheme="blue" mr={3} onClick={handleCreatePost} isLoading={loading}>
               Post
             </Button>
           </ModalFooter>

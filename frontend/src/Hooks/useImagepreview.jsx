@@ -20,7 +20,7 @@ function useImagepreview() {
         }
     }
 // console.log(imageUrl);
-  return {handleImageChange,imageUrl}
+  return {handleImageChange,imageUrl,setimageUrl}
 }
 
 export default useImagepreview

@@ -16,21 +16,23 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useshowToast from "../Hooks/useshowToast";
 function CreatePost() {
-    const imageRef=useRef()
+    const imageRef=useRef(null)
     const MaxChar=500
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [postText,setpostText] = useState("")
   const {handleImageChange,imageUrl,setimageUrl}=useImagePreview()
-  const [remainingChar, setremainingChar] = useState("")
+  const [remainingChar, setremainingChar] = useState(MaxChar)
   const user=useRecoilValue(userAtom)
   const showToast = useshowToast()
+
+
   const handleChange=(e)=>{
     const inputText=e.target.value
 
     if(inputText.length>MaxChar){
         const truncatedText=inputText.slice(0,MaxChar)
         setpostText(truncatedText)
-        setremainingChar(0 - inputText.length + MaxChar)
+        setremainingChar(0)
     }else{
         setpostText(inputText)
         setremainingChar(MaxChar-inputText.length)
@@ -114,7 +116,9 @@ function CreatePost() {
                         top="2"
                         right="2"
 
-                        onClick={() => setimageUrl("")}
+                        onClick={() =>{
+                             setimageUrl("")
+                            }}
                         />
                     </Flex>
                 )}

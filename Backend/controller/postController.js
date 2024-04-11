@@ -2,44 +2,44 @@ import Post from "../models/postmodel.js"
 import User from "../models/userModel.js"
 import{v2 as cloudinary} from "cloudinary"
 
-const createPost= async(req,res)=>{
-    let {postedBy,text,img}=req.body
-    try {
-        if (!postedBy || !text){
-            return res.status(400).json({error: " all the fields are required"})
-        }
+const createPost = async (req, res) => {
+	try {
+		const { postedBy, text } = req.body;
+		let { img } = req.body;
 
-       const user = await User.findById(postedBy)
-       if (!user){
-           return res.status(400).json({error: "user not found"})
-       }
-       if (user._id.toString() !== req.user._id.toString()) {
-            res.status(404).json({error: "Unauthorised to create Post"})
-       }
-       const maxlength =500
-       if (text.length > maxlength) {
-           return res.status(400).json({error: "text is too long"})
-       }
-       if(img){
-        const uploadedResponse=await cloudinary.uploader.upload(img)
-         img=uploadedResponse.secure_url
-           
-       }
-       const newPost=new Post({postedBy,text,img})
-        await newPost.save()
-        res.status(201).json({
-          postedby:  newPost.postedBy,
-           text: newPost.text,
-          img:  newPost.img,
-           _id: newPost._id,
+		if (!postedBy || !text) {
+			return res.status(400).json({ error: "Postedby and text fields are required" });
+		}
 
-        })
-        console.log("Post Created");
-    } catch (error) {
-        res.status(500).json({error: error.message})
-        console.log("Error in createPost   "+ error.message);
-    }
-}
+		const user = await User.findById(postedBy);
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+
+		if (user._id.toString() !== req.user._id.toString()) {
+			return res.status(401).json({ error: "Unauthorized to create post" });
+		}
+
+		const maxLength = 500;
+		if (text.length > maxLength) {
+			return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
+		}
+
+		if (img) {
+			const uploadedResponse = await cloudinary.uploader.upload(img);
+			img = uploadedResponse.secure_url;
+		}
+
+		const newPost = new Post({ postedBy, text, img });
+		await newPost.save();
+
+		res.status(201).json(newPost);
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+		console.log(err);
+	}
+};
+
 const getPost=async(req,res)=>{
     try {
         const post=await Post.findById(req.params.id)

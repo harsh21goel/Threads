@@ -132,6 +132,7 @@ try {
     }
     const following=user.following
     const feedPosts= await Post.find({postedBy:{$in:following}}).sort({cretedAt:-1})
+    // const feedPostsArray = Array.isArray(feedPosts) ? feedPosts : Array.from(feedPosts);
     res.status(200).json(feedPosts)
 
 } catch (error) {

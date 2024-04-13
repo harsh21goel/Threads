@@ -20,6 +20,7 @@ import useshowToast from "../Hooks/useshowToast";
 export default function SimpleCard() {
   const setAuthscreen = useSetRecoilState(authScreenatom);
   const setUser = useSetRecoilState(userAtom);
+  const [loading, setloading] = useState(false)
   const [inputs, setinputs] = useState({
     username:"",
     password:""
@@ -27,6 +28,7 @@ export default function SimpleCard() {
   const showToast=useshowToast()
 const handleLogin=async()=>{
   // console.log(inputs);
+  setloading(true)
  try {
  const res=await fetch("api/users/login",{
   method:"POST",
@@ -45,6 +47,8 @@ const handleLogin=async()=>{
 setUser(data)
  } catch (error) {
   showToast("Error " , error.message,"error")
+ }finally{
+  setloading(false)
  }
 }
   return (
@@ -91,13 +95,15 @@ setUser(data)
                   bg: useColorModeValue("gray.600", "gray.600"),
                 }}
                 onClick={handleLogin}
+                isLoading={loading}
+                loadingText="Logging in"
               >
                 Log in
               </Button>
             </Stack>
             <Text align={"center"} size={"xs"}>
               Don&apos;t hv an account{" "}
-              <Link color={"blue.400"} onClick={() => setAuthscreen("signup")}>
+              <Link color={"blue.400"} onClick={() => setAuthscreen("signup")} >
                 Sign up
               </Link>
             </Text>

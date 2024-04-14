@@ -7,8 +7,8 @@ const router = express.Router();
 router.get("/feed",protectRoute,getFeedPosts)
 router.get("/:id",protectRoute,getPost)
 router.post('/create',protectRoute, createPost);
-router.post('/like/:id',protectRoute, likePost);
-router.post('/reply/:id',protectRoute, replyToPost);
+router.put('/like/:id',protectRoute, likePost);
+router.put('/reply/:id',protectRoute, replyToPost);
 router.delete("/:id",protectRoute,deletePost);
 
 

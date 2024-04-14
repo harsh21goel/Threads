@@ -1,6 +1,5 @@
-import { Button, Flex ,Spinner} from '@chakra-ui/react'
+import {  Flex ,Spinner} from '@chakra-ui/react'
 import React, { useEffect,useState } from 'react'
-import { Link } from 'react-router-dom'
 import useshowToast from '../Hooks/useshowToast'
 import Post from '../components/Post'
 function HomePage() {
@@ -20,7 +19,7 @@ const getFeed= async()=>{
     return
     }
     setposts(data)
-    // console.log( typeof data);
+    // console.log(  data);
   } catch (error) {
     showtoast( "Error",error.message,"error")
   }finally{
@@ -43,7 +42,7 @@ getFeed()
    {!loading && posts.length===0 && <h1>You're not following anyone</h1>}
 
 {posts.map((post)=>(
-<Post key={post._id} post={post} postedby={post.postedBy}/>
+<Post key={post._id} post={post} postedBy={post.postedBy}/>
 ) )}
    </>
   )

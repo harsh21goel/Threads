@@ -37,7 +37,7 @@ const [updating,setupdating]=useState(false)
         isClosable: true,
       });
     });
-  };
+  };  
  
 
   const handleFollow= async () => {

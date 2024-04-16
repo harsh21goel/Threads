@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Center,
   Flex,
   Text,
   Image,
@@ -15,10 +14,14 @@ import { Link ,useNavigate} from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import Actions from "./Action";
 import useshowToast from "../Hooks/useshowToast";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+import { MdOutlineDelete } from "react-icons/md";
 function Post({ post, postedBy }) {
   const [user, setuser] = useState("")
   const showToast = useshowToast();
   const navigate=useNavigate()
+  const currentuser=useRecoilValue(userAtom)
   useEffect(() => {
 
     const getUser = async () => {
@@ -38,6 +41,24 @@ function Post({ post, postedBy }) {
     };
     getUser();
   }, [showToast,postedBy]);
+  const handleDeletePost= async (e)=>{
+    e.preventDefault()
+    if(!window.confirm("Are you sure you want to delete this post")) return
+    try {
+      const res = await fetch(`/api/posts/${post._id}`,{
+        method:"DELETE",
+      })
+      const data = await res.json();
+      if (data.error) {
+        showToast("Error",datat.error,"error")
+        return
+      }
+      showToast("Success","Post Deleted","success")
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    }
+
+  }
 
   return (
     <Link to={`/${user.username}/post/${post._id}`}>
@@ -109,6 +130,10 @@ function Post({ post, postedBy }) {
               <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
                 {formatDistanceToNow(new Date(post.createdAt) )} ago
               </Text>
+
+              {currentuser?._id=== user._id && (
+                <MdOutlineDelete size={15} onClick={handleDeletePost}/>
+              )}
               <Menu>
                 <MenuButton>
                 </MenuButton>

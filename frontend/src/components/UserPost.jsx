@@ -16,7 +16,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import Actions from "./Action";
 
 function UserPost({ likes, replies, PostImg, PostTitle }) {
-  const [liked, setliked] = useState("false");
+  const [liked, setliked] = useState(false);
   return (
     <Link to={"/markzukerberg/post/1"}>
       <Flex gap={3} mb={4} py={5}>
@@ -91,7 +91,7 @@ function UserPost({ likes, replies, PostImg, PostTitle }) {
           )}
 
           <Flex gap={3} my={1}>
-            <Actions liked={liked} setliked={setliked} />
+            {/* <Actions liked={liked} setliked={setliked} /> */}
           </Flex>
 
           <Flex gap={2} alignItems={"center"}>

@@ -59,6 +59,11 @@ const deletePost= async(req,res)=>{
        const post= await Post.findById(req.params.id)
        if(!post) return res.status(404).json({error:"Not Found"});
        if(post.postedBy.toString() !== req.user._id.toString()) return res.status(404).json({error:"Unauthorised to delete Post"})
+
+       if(post.img){
+        const PostImgId= post.img.split("/").pop().split(".")[0];
+        await cloudinary.uploader.destroy(PostImgId)
+       }    
         await Post.findByIdAndDelete(req.params.id)
         res.status(200).json({message: "Post Deleted"})
         
@@ -101,7 +106,8 @@ const replyToPost=async (req, res) => {
         const {text}=req.body;
         const postId=req.params.id
         const userId=req.user._id
-        const userProfilePic=req.user.userProfilePic
+        const userProfilepic=req.user.profilepic
+
         const username=req.user.username
 
         if (!text) {
@@ -109,8 +115,9 @@ const replyToPost=async (req, res) => {
         }
         const post= await Post.findById(postId)
         if(!post) return res.status(404).json({error:"Post Not Found"});
-        const reply={userId,text,userProfilePic,username}
-        // console.log(reply);
+        const reply={userId,text,userProfilepic,username}
+        if(!userProfilepic) return res.status(404).json({error:"No profile pic"})
+        console.log(reply);
 
         post.replies.push(reply)
         await post.save()
@@ -141,5 +148,18 @@ try {
 }
 
 }
+const getUserPosts=async (req,res)=>{
+    const {username}=req.params;
+    try {
+        const user= await User.findOne({username})
+        if(!user){
+            return res.status(404).json({error:"User Not Found"})
+        }
+        const posts=await Post.find({postedBy:user._id}).sort({cretedAt:-1});
+        res.status(200).json(posts)
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+}
 
-export {createPost,getPost,deletePost,likePost,replyToPost,getFeedPosts}
+export {createPost,getPost,deletePost,likePost,replyToPost,getFeedPosts,getUserPosts}

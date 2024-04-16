@@ -19,11 +19,14 @@ const Actions = ({ post: post_ }) => {
   const showToast = useshowToast();
   const user = useRecoilValue(userAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [liked, setliked] = useState(post_.likes.includes(user?._id));
   const [post, setpost] = useState(post_);
+  const [liked, setliked] = useState(post.likes.includes(user?._id));
+//   console.log(post)
+
   const [reply, setreply] = useState("");
-  const [loading, setloading] = useState(false);
+  const [isliking, setisliking] = useState(false);
+  const [isreplying, setisreplying] = useState(false);
+
   const handleLikeAndUnlike = async () => {
     if (!user)
       return showToast(
@@ -31,7 +34,8 @@ const Actions = ({ post: post_ }) => {
         "You must be logged in to Like a post",
         "error"
       );
-    setloading(true);
+	  if(isliking)return
+    setisliking(true);
     try {
       const res = await fetch(`/api/posts/like/${post._id}`, {
         method: "PUT",
@@ -54,11 +58,14 @@ const Actions = ({ post: post_ }) => {
     } catch (error) {
       showToast("Error", error.message, "error");
     } finally {
-      setloading(false);
+      setisliking(false);
     }
   };
+
   const handlereply =async()=>{
 	if(!user)return showToast("Error", "You must be logged in to reply on post","error");
+	if(isreplying)return;
+	setisreplying(true);
 	try {
 		const res= await fetch(`/api/posts/reply/${post._id}`,{
 			method:"PUT",
@@ -73,8 +80,12 @@ const Actions = ({ post: post_ }) => {
 		}
 		setpost({...post,replies: [...post.replies,data.replies]})
 		showToast("Success","Replied Successfully","success");
+		onClose()
+		setreply("")
 	} catch (error) {
 		showToast("Error", error.message, "error")
+	}finally{
+		setisreplying(false)
 	}
   }
   return (
@@ -141,7 +152,7 @@ const Actions = ({ post: post_ }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button size={"sm"} colorScheme="blue" mr={3} onClick={handlereply}>
+            <Button size={"sm"} colorScheme="blue" mr={3} onClick={handlereply} isLoading={isreplying}>
               Reply
             </Button>
           </ModalFooter>

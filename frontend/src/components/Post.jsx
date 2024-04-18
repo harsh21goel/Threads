@@ -14,14 +14,16 @@ import { Link ,useNavigate} from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import Actions from "./Action";
 import useshowToast from "../Hooks/useshowToast";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { MdOutlineDelete } from "react-icons/md";
+import postsAtom from "../atoms/Postatom";
 function Post({ post, postedBy }) {
   const [user, setuser] = useState("")
   const showToast = useshowToast();
   const navigate=useNavigate()
   const currentuser=useRecoilValue(userAtom)
+  const[posts,setposts]=useRecoilState(postsAtom)
   useEffect(() => {
 
     const getUser = async () => {
@@ -50,10 +52,11 @@ function Post({ post, postedBy }) {
       })
       const data = await res.json();
       if (data.error) {
-        showToast("Error",datat.error,"error")
+        showToast("Error",data.error,"error")
         return
       }
       showToast("Success","Post Deleted","success")
+      setposts(posts.filter((p) => p._id !== post._id))
     } catch (error) {
       showToast("Error", error.message, "error");
     }

@@ -44,10 +44,7 @@ const getPost=async(req,res)=>{
     try {
         const post=await Post.findById(req.params.id)
         if(!post) return res.status(404).json({error:"Not Found"});
-        if(post.postedBy.toString() !== req.user._id.toString())
-        { 
-            return res.status(404).json({error:"You can access only your post"})
-         }
+        
         res.status(200).json(post)
     } catch (error) {
         res.status(500).json({error: error.message});
@@ -122,7 +119,7 @@ const replyToPost=async (req, res) => {
         post.replies.push(reply)
         await post.save()
 
-        res.status(200).json({message: " Replied successfully"})
+        res.status(200).json(reply)
         console.log("Replied successfully");
     } catch (error) {
         res.status(404).json({error: error.message});

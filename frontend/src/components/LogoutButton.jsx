@@ -4,9 +4,11 @@ import { useSetRecoilState } from 'recoil'
 import userAtom from '../atoms/userAtom'
 import useshowToast from '../Hooks/useshowToast'
 import { MdLogout } from "react-icons/md";
+import { useNavigate } from 'react-router-dom'
 function LogoutButton() {
     const setUserState=useSetRecoilState(userAtom)
     const showToast=useshowToast()
+    const navigate= useNavigate()
 const handleLogout = async() => {
     try {
        const res=await fetch("api/users/logout",{
@@ -23,6 +25,7 @@ const handleLogout = async() => {
         }
         localStorage.removeItem("users-threads")
         setUserState(null)
+        navigate("/auth")
     } catch (error) {
         showToast("Error", error,"error")
 
@@ -35,7 +38,7 @@ const handleLogout = async() => {
     position="fixed"
     top={"30px"}
     right={"30px"}
-    size={"sm"}
+    size={"xs"}
     onClick={handleLogout}
     >
      <MdLogout size={20}/>

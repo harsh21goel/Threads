@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { Box, Text, Input, Button } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useshowToast from "../Hooks/useshowToast";
 import {
@@ -15,11 +15,12 @@ import {
   useDisclosure,
   FormControl,
 } from "@chakra-ui/react";
-const Actions = ({ post: post_ }) => {
+import postsAtom from "../atoms/Postatom";
+const Actions = ({ post }) => {
   const showToast = useshowToast();
   const user = useRecoilValue(userAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [post, setpost] = useState(post_);
+  const [posts, setposts] = useRecoilState(postsAtom)
   const [liked, setliked] = useState(post.likes.includes(user?._id));
 //   console.log(post)
 
@@ -50,9 +51,24 @@ const Actions = ({ post: post_ }) => {
       }
       // console.log(data);
       if (!liked) {
-        setpost({ ...post, likes: [...post.likes, user._id] });
+        const updatedpost= posts.map((p)=>{
+          if(p._id === post._id) {
+            return {
+             ...p, likes: [...p.likes, user._id]
+            };
+        }
+        return p
+
+      })
+        setposts(updatedpost)
       } else {
-        setpost({ ...post, likes: post.likes.filter((id) => id !== user._id) });
+        const updatedpost= posts.map((p)=>{
+          return{
+            ...p, likes: p.likes.filter((id)=> id !== user._id)
+          }
+        })
+        setposts(updatedpost)
+
       }
       setliked(!liked);
     } catch (error) {
@@ -78,7 +94,14 @@ const Actions = ({ post: post_ }) => {
 		if (data.error) {
 			showToast("Error",data.error,"error");
 		}
-		setpost({...post,replies: [...post.replies,data.replies]})
+		const updatedpost= posts.map((p)=>{
+      if(p._id === post._id) {
+        return {
+         ...p, replies: [...p.replies, data]
+        };}
+        return p
+      })
+      setposts(updatedpost)
 		showToast("Success","Replied Successfully","success");
 		onClose()
 		setreply("")

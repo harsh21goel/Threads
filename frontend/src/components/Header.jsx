@@ -21,6 +21,7 @@ function Header() {
         cursor={"pointer"}
         alt='logo'
         w={6}
+        justifyItems={"center"}
         src={colorMode=== "dark"? "/light-logo.svg" : "/dark-logo.svg"}
         onClick={toggleColorMode}
         />

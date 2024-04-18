@@ -12,9 +12,11 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import useImagePreview from "../Hooks/useImagepreview"
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useshowToast from "../Hooks/useshowToast";
+import postsAtom from "../atoms/Postatom";
+import { useParams } from "react-router-dom";
 function CreatePost() {
     const imageRef=useRef(null)
     const MaxChar=500
@@ -25,8 +27,8 @@ function CreatePost() {
   const [loading, setloading] = useState(false)
   const user=useRecoilValue(userAtom)
   const showToast = useshowToast()
-
-
+const [posts,setposts]= useRecoilState(postsAtom)
+const {username}=useParams()
   const handleChange=(e)=>{
     const inputText=e.target.value
 
@@ -57,6 +59,10 @@ function CreatePost() {
         return
     }
     showToast("success","post created successfully","success")
+    if(username=== user.username){
+    setposts([data,...posts])
+
+    }
     onClose()
     setpostText("")
     setimageUrl("")
@@ -75,12 +81,12 @@ function CreatePost() {
         position={"fixed"}
         bottom={10}
         right={5}
-        leftIcon={<AddIcon />}
+        
         bg={useColorModeValue("gray.300", "gray.dark")}
         size={"sm"}
         onClick={onOpen}
       >
-        Post
+        <AddIcon />
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

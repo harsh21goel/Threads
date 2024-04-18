@@ -4,6 +4,9 @@ import genrateTokenAndSetCookie from "../utils/helperfn/generateTokenAndSetCooki
 import {v2 as cloudinary} from "cloudinary";
 // import sharp from "sharp";
 import mongoose  from "mongoose";
+import Post from "../models/postmodel.js";
+
+
 const getProfile= async (req,res)=>{
     //query can be either username or userId
     const {query}=req.params
@@ -143,7 +146,7 @@ const followUnfollow=async (req,res)=>{
 }
 
 const updateUserProfile=async (req, res) => {
-    const {name,email,password,bio} =req.body;
+    const {name,email,password,bio,username} =req.body;
     let  {profilepic}=req.body
     const userId=req.user._id
     try {
@@ -169,11 +172,27 @@ const updateUserProfile=async (req, res) => {
         }
         user.name= name || user.name;
         user.email= email || user.email;
-        // user.username= username || user.username
+        user.username= username || user.username
         user.profilepic=profilepic || user.profilepic;
         user.bio= bio || user.bio;
 
         user= await user.save();
+         await Post.updateMany(
+            {
+                "replies.userId": userId,
+            },{
+                $set:{
+                    "replies.$[reply].username": user.username,
+                    "replies.$[reply].userProfilepic": user.profilepic
+
+                }
+            },{
+                arrayFilters:[{"reply.userId": userId}]
+            }
+        )
+
+
+
         user.password=null
         res.status(200).json({user})
 

@@ -87,7 +87,7 @@ function Post({ post, postedBy }) {
                padding={"2px"}
              />
             )}
-            {post.replies.length[1] && (
+            {post.replies[1] && (
                <Avatar
                size={"xs"}
                name="John Doe"
@@ -102,7 +102,7 @@ function Post({ post, postedBy }) {
               <Avatar
               size={"xs"}
               name="John Doe"
-              src={post.replies[2].userprofilepic}
+              src={post.replies[2].userProfilepic}
               position={"absolute"}
               left={"4px"}
               bottom={"0px"}

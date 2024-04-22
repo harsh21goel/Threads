@@ -5,6 +5,7 @@ import userAtom from '../atoms/userAtom'
 import { Link as RouterLink } from 'react-router-dom'
 import {AiFillHome} from "react-icons/ai"
 import {RxAvatar} from "react-icons/rx"
+import { IoChatbubblesOutline } from "react-icons/io5";
 function Header() {
    const user=useRecoilValue(userAtom)
     const{colorMode,toggleColorMode}=useColorMode()
@@ -27,10 +28,17 @@ function Header() {
         />
 
 {user && (
+  <Flex alignItems={"center"} gap={4}>
      <Link as={RouterLink} to={user ? `/${user.username}` : "#"}>
         <RxAvatar size={24} />
       </Link>
-    )}
+     <Link as={RouterLink} to={`/chat`}>
+        <IoChatbubblesOutline size={24} />
+      </Link>
+      
+    
+    </Flex>
+)}
     </Flex>
     </>
   )

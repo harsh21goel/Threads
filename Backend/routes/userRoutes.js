@@ -10,6 +10,6 @@ router.post("/login",loginUser)
 router.post("/logout",logoutUser)
 router.post("/follow/:id",protectRoute, followUnfollow)
 router.put("/update/:id",protectRoute, updateUserProfile)
-
+    
 export default router
 

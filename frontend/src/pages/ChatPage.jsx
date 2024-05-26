@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Input, Skeleton, SkeletonCircle, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import { CiSearch } from "react-icons/ci";
+import Conversation from "../components/Conversation";
 function ChatPage() {
   return (
     <Box
@@ -54,6 +55,7 @@ function ChatPage() {
                 </Flex>
               </Flex>
             ))}
+            <Conversation />
         </Flex>
         <Flex flex={70}>Message Container</Flex>
 

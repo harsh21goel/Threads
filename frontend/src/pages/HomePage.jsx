@@ -10,7 +10,7 @@ function HomePage() {
 const [posts, setposts] = useRecoilState(postsAtom)
 const [loading, setloading] = useState(true)
 
-useEffect(()=>{
+useEffect(()=>{ 
 const getFeed= async()=>{
   setloading(true)
   setposts([])

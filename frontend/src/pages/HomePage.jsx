@@ -7,7 +7,8 @@ import postsAtom from '../atoms/Postatom'
 function HomePage() {
   const showtoast= useshowToast()
 
-const [posts, setposts] = useRecoilState(postsAtom)
+// const [posts, setposts] = useRecoilState(postsAtom)
+const [posts, setposts] =useState([])
 const [loading, setloading] = useState(true)
 
 useEffect(()=>{ 

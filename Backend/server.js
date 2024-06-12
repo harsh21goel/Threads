@@ -4,8 +4,9 @@ import connectDb from './db/connectDb.js';
 import cookieParser from 'cookie-parser';
 import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
+import messageRoutes from "./routes/messageRoutes.js"
 import {v2 as cloudinary} from 'cloudinary'
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 dotenv.config()
 connectDb()
 const app = express();
@@ -24,6 +25,7 @@ app.use(cookieParser())
 
 app.use("/api/users",userRoutes)
 app.use("/api/posts",postRoutes)
+app.use("/api/messages",messageRoutes)
 
 
 

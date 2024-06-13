@@ -43,6 +43,26 @@ const sendMessage=async(req,res)=>{
         res.status(500).json({message: error})
     }
 }
+const getConversation=async(req,res)=>{
+    const userId= req.user._id
+     try {
+       const conversations = await Conversation.find({participants:userId })
+       .populate({
+               path: 'participants',
+               select: 'username profilepic', 
+           })
+           if (!conversations || conversations.length === 0) {
+               return res.status(404).json({ message: "No conversations found" });
+             }
+             
+   
+       res.status(200).json(conversations)
+     } catch (error) {
+       res.status(500).json({error: error.message})
+       console.log("Error in getConversation function: " + error.message);
+     }
+   
+   }
 const getMessages = async (req, res) =>{
     const {otherUserId}= req.params
     const userId = req.user._id
@@ -57,7 +77,8 @@ const getMessages = async (req, res) =>{
 
          const messages = await Message.find({
             conversationId: conversation._id
-        }).sort({createdAt: -1})
+        }).sort({createdAt: 1})
+
 
         res.status(200).json(messages)
     } catch (error) {
@@ -66,8 +87,10 @@ const getMessages = async (req, res) =>{
     }
 }
 
+
 export {
     sendMessage,
     getMessages,
+    getConversation
 }
 

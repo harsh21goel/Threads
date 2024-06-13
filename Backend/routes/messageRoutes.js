@@ -1,9 +1,10 @@
 import express from "express"
 import protectRoute from "../middleware/protectRoute.js"
-import { sendMessage } from "../controller/messageController.js"
+import { getMessages, sendMessage } from "../controller/messageController.js"
 
 const router=express.Router()
 
 router.post('/',protectRoute,sendMessage)
+router.get('/:otherUserId',protectRoute,getMessages)
 
 export default router

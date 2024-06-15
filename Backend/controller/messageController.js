@@ -61,14 +61,14 @@ const getConversation=async(req,res)=>{
        res.status(500).json({error: error.message})
        console.log("Error in getConversation function: " + error.message);
      }
-   
+//    console.log("getConversation function");
    }
 const getMessages = async (req, res) =>{
     const {otherUserId}= req.params
     const userId = req.user._id
     try {
         const conversation = await Conversation.findOne({
-            participants:{$all: [userId,otherUserId ]}
+            participants:{$all: [userId,otherUserId]}
         })
 
         if (!conversation) {
@@ -83,8 +83,10 @@ const getMessages = async (req, res) =>{
         res.status(200).json(messages)
     } catch (error) {
         res.status(500).json({error: error.message})
-        console.log("Error in getMessages function: " + error.message);
+        console.log("Error in getMessages function: " + error);
     }
+//    console.log("getMessages function");
+
 }
 
 

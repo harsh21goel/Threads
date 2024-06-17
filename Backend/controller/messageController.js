@@ -54,7 +54,11 @@ const getConversation=async(req,res)=>{
            if (!conversations || conversations.length === 0) {
                return res.status(404).json({ message: "No conversations found" });
              }
-             
+          conversations.forEach((conversation)=>{
+                conversation.participants=conversation.participants.filter(
+                    (participant)=>participant._id.toString() !== userId.toString()
+                )
+          })   
    
        res.status(200).json(conversations)
      } catch (error) {

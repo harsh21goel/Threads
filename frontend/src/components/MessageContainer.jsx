@@ -2,8 +2,25 @@ import { Avatar, Flex, useColorModeValue,Text,Image, Divider, SkeletonCircle, Sk
 import React from 'react'
 import Message from './Message'
 import MessageInput from './MessageInput'
+import { useRecoilState } from 'recoil'
+import { selectedConversationAtom } from '../atoms/ConversationAtom'
+import { useEffect } from 'react'
+import useshowToast from '../Hooks/useshowToast'
 
 const MessageContainer = () => {
+    const showtoast= useshowToast()
+    const [selectedConversation, setselectedConversation] = useRecoilState(selectedConversationAtom)
+    useEffect(()=>{
+        const getMessage = async ()=>{
+            try {
+                const res= await fetch(`api/messages/${selectedConversation._id}`)
+            const data= await res.json()
+            } catch (error) {
+                showtoast("Error", error.message, "error")
+            }
+        }
+        getMessage()
+    },[showtoast])
   return (
     <Flex
     flex={70}

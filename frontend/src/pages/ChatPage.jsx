@@ -31,7 +31,7 @@ function ChatPage() {
           return;
         }
         // console.log(data);
-        setconversations(data)
+        setconversations(Array.isArray(data) ? data : []);
       } catch (error) {
         showtoast("Error", error.message, "error");
       }finally{

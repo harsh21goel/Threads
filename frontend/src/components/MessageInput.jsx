@@ -1,17 +1,17 @@
-import { InputGroup ,Input, InputRightElement} from '@chakra-ui/react'
-import React, { useState } from 'react'
-import {IoSendSharp} from "react-icons/io5"
-import useshowToast from '../Hooks/useshowToast'
-import { useRecoilValue } from 'recoil'
-import { selectedConversationAtom } from '../atoms/ConversationAtom'
-const MessageInput = ({setmessages}) => {
-  const [messagetxt,setmessagetxt]=useState("")
-const showtoast=useshowToast()
-  const handleSendMessage = async ()=>{
-    const selectedConversation = useRecoilValue(selectedConversationAtom)
-const recipientId= selectedConversation.userId
-e.preventdefault()
-if (!messagetxt) return
+import { InputGroup, Input, InputRightElement } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { IoSendSharp } from "react-icons/io5";
+import useshowToast from "../Hooks/useshowToast";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { conversationAtom, selectedConversationAtom } from "../atoms/ConversationAtom";
+const MessageInput = ({ setmessages }) => {
+  const [messagetxt, setmessagetxt] = useState("");
+  const showtoast = useshowToast();
+  const selectedConversation = useRecoilValue(selectedConversationAtom);
+  const [conversation,setconversation] =useRecoilState(conversationAtom)
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!messagetxt) return;
 
     try {
       const res = await fetch("api/messages", {
@@ -20,30 +20,53 @@ if (!messagetxt) return
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message:messagetxt,
-          recipientId: recipientId
+          message: messagetxt,
+          recipientId: selectedConversation.userId,
         }),
-        
+      });
+      const data = await res.json();
+      if (data.error) {
+        showtoast("error", data.error, "error");
+        return;
+      }
+      setmessages((messages) => [...messages, data]);
+      setconversation(prevConv=> {
+        const updatedConvs= prevConv.map(conversation=>{
+          if (conversation._id=== selectedConversation._id) {
+            return {
+              ...conversation,
+              lastmessage:{
+                text:messagetxt,
+                sender:data.sender
+              }
+            }
+          }
+          return conversation
+        })
+        return updatedConvs
       })
-      const data= await res.json()
-      console.log(data);
+      setmessagetxt("")
+
     } catch (error) {
-      showtoast("error", error.message, "error")
+      showtoast("error", error.message, "error");
     }
-  }
-
-
+  };
 
   return (
     <form onSubmit={handleSendMessage}>
-        <InputGroup>
-        <Input w={"full"} placeholder='Type a message' onChange={(e)=>setmessagetxt(e.target.value)}/>
+      <InputGroup>
+        <Input
+          w={"full"}
+          placeholder="Type a message"
+          onChange={(e) => setmessagetxt(e.target.value)}
+          value={messagetxt}
+        />
         <InputRightElement onClick={handleSendMessage} cursor={"pointer"}>
-            <IoSendSharp/>
+          <IoSendSharp />
         </InputRightElement>
-        </InputGroup>
+      </InputGroup>
     </form>
-  )
-}
+  );
+};
 
-export default MessageInput
+export default MessageInput;

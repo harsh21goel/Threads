@@ -26,6 +26,7 @@ function Conversation({conversation}) {
             userId: user._id,
             username: user.username,
             profilepic: user.profilepic,
+            mock:conversation.mock
            
         })}
         >

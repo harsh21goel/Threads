@@ -14,13 +14,17 @@ import Conversation from "../components/Conversation";
 import { GiConversation } from "react-icons/gi";
 import MessageContainer from "../components/MessageContainer";
 import useShowToast from "../Hooks/useshowToast";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { conversationAtom, selectedConversationAtom } from "../atoms/ConversationAtom";
+import userAtom from "../atoms/userAtom";
 function ChatPage() {
   const showtoast = useShowToast();
   const [loadingconversations, setloadingConversations] = useState(true);
+  const [loadingSearch, setloadingSearch] = useState("");
+  const [searchedText, setsearchedText] = useState("");
   const [conversations, setconversations] = useRecoilState(conversationAtom)
   const [selectedConversation, setselectedConversation] = useRecoilState(selectedConversationAtom)
+  const currentuser = useRecoilValue(userAtom)
   useEffect(() => {
     const getConversation = async () => {
       try {
@@ -40,6 +44,52 @@ function ChatPage() {
     };
     getConversation();
   }, [showtoast]);
+  const handleConversationSearch= async(e)=>{
+    e.preventDefault()
+    setloadingSearch(true)
+    try {
+      const res  = await fetch(`api/users/profile/${searchedText}`)
+      const searchedUser= await res.json()
+      if (searchedUser.error) {
+        showtoast("Error", searchedUser.error, "error");
+        return;
+      }
+      if (searchedUser._id === currentuser._id)  {
+        showtoast("Error", "You can't message yourself", "error")
+        return
+      }
+      if(conversations.find(conversation => conversation.participants[0]._id===searchedUser._id)){
+          setselectedConversation({
+            _id: conversations.find(conversation => conversation.participants[0]._id===searchedUser._id)._id,
+            userId: searchedUser._id,
+            username: searchedUser.username,
+            profilepic: searchedUser.profilepic,
+            
+          })
+          return
+      }
+      const mockConversation={
+        mock:true,
+        lastmessage:{
+          text:"",
+          sender:"",
+        },
+        _id:Date.now(),
+        participants: [
+          {
+            _id: searchedUser._id,
+            username: searchedUser.username,
+            profilepic: searchedUser.profilepic,
+          },
+        ],
+      }
+      setconversations((prevconv)=>[...prevconv,   mockConversation])
+    } catch (error) {
+      showtoast("Error: " , error, "error")
+    }finally{
+      setloadingSearch(false)
+    }
+  }
   return (
     <Box
       position={"absolute"}
@@ -80,10 +130,10 @@ function ChatPage() {
           >
             Your conversation
           </Text>
-          <form>
+          <form onSubmit={handleConversationSearch}>
             <Flex alignItems={"center"} gap={2}>
-              <Input placeholder="Serach for a user" />
-              <Button size={"sm"}>
+              <Input placeholder="Serach for a user"  onChange={(e)=>setsearchedText(e.target.value)}/>
+              <Button size={"sm"} onClick={handleConversationSearch} isLoading={loadingSearch}>
                 {" "}
                 <CiSearch />{" "}
               </Button>

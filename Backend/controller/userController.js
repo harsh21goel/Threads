@@ -7,29 +7,37 @@ import mongoose  from "mongoose";
 import Post from "../models/postmodel.js";
 
 
-const getProfile= async (req,res)=>{
-    //query can be either username or userId
-    const {query}=req.params
+const getProfile = async (req, res) => {
+    // query can be either username, userId, or name
+    const { query } = req.params;
 
     try {
         let user;
-        //query is id
+
+        // Check if query is a valid ObjectId (userId)
         if (mongoose.Types.ObjectId.isValid(query)) {
-            user= await User.findOne({_id:query}).select("-password").select("-updatedAt")
-        } else {
-            // query is username
-        user=await User.findOne({username:query}).select("-password").select("-updatedAt");
-            
+            user = await User.findOne({ _id: query }).select("-password -updatedAt");
         }
 
-        if(!user)return res.status(400).json({error:"User not found"})
+        // If user is not found by ID, check by username
+        if (!user) {
+            user = await User.findOne({ username: query }).select("-password -updatedAt");
+        }
 
-        res.status(200).json(user)
+        // If user is not found by username, check by name
+        if (!user) {
+            user = await User.findOne({ name: query }).select("-password -updatedAt");
+        }
+
+        if (!user) return res.status(400).json({ error: "User not found" });
+
+        res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({error: error.message});
-        console.log("Error in getProfile   "+error.message);
+        res.status(500).json({ error: error.message });
+        console.log("Error in getProfile: " + error.message);
     }
-}
+};
+
 
 
 
@@ -214,6 +222,7 @@ export  {signupUser,
 followUnfollow,
 updateUserProfile,
 getProfile
+
 
 
 };

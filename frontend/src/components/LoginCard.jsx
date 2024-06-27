@@ -22,8 +22,8 @@ export default function SimpleCard() {
   const setUser = useSetRecoilState(userAtom);
   const [loading, setloading] = useState(false)
   const [inputs, setinputs] = useState({
-    username:"",
-    password:""
+    username:"test",
+    password:"test"
   })
   const showToast=useshowToast()
 const handleLogin=async()=>{

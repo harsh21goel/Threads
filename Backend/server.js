@@ -6,10 +6,11 @@ import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import messageRoutes from "./routes/messageRoutes.js"
 import {v2 as cloudinary} from 'cloudinary'
+import { app,server } from './socket/socket.js';
 // import bodyParser from 'body-parser';
 dotenv.config()
 connectDb()
-const app = express();
+
 const PORT=process.env.PORT || 3000;
 
 cloudinary.config({
@@ -38,4 +39,4 @@ app.use("/api/messages",messageRoutes)
 
 
 
-app.listen( PORT,()=>console.log( `server started at http://localhost:${PORT}`))
+server.listen( PORT,()=>console.log( `server started at http://localhost:${PORT}`))

@@ -10,9 +10,27 @@ const io = new Server(server,{
         methods:["GET","POST"]
     }
 })
-
+const userSocketmap={};
 io.on("connection",(socket)=>{
-console.log("user connected" + socket.id);
+console.log("user connected " + socket.id);
+
+
+const userId= socket.handshake.query.userId;
+if(userId !== undefined) userSocketmap[userId] = socket.id
+io.emit("getOnlineUsers", Object.keys(userSocketmap))
+
+
+
+
+
+socket.on("disconnect",()=>{
+    console.log("user disconnected");
+    delete userSocketmap[userId]
+io.emit("getOnlineUsers", Object.keys(userSocketmap))
+
+});
 })
+
+
 
 export {io,server,app}

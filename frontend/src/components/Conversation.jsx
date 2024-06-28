@@ -4,7 +4,7 @@ import {useRecoilState, useRecoilValue} from 'recoil'
 import userAtom from "../atoms/userAtom.js"
 import {BsCheck2All } from "react-icons/bs"
 import { selectedConversationAtom } from '../atoms/ConversationAtom.js'
-function Conversation({conversation}) {
+function Conversation({conversation,isOnline}) {
     const user = conversation.participants[0]
     const lastmessage=conversation.lastmessage
   const [selectedConversation , setselectedConversation]= useRecoilState(selectedConversationAtom)
@@ -38,7 +38,7 @@ function Conversation({conversation}) {
                 }}
                 src={user.profilepic}
                 >
-                <AvatarBadge boxSize={"1em"} bg={"green.500"}/>
+                {isOnline?<AvatarBadge boxSize={"1em"} bg={"green.500"}/>:""}
                 </Avatar>
             </WrapItem>
             <Stack direction={"column"} fontSize={"sm"}>

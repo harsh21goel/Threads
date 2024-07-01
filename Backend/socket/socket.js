@@ -10,7 +10,13 @@ const io = new Server(server,{
         methods:["GET","POST"]
     }
 })
+
+export const getrecipientsocketId=(recipientId)=>{
+    return userSocketmap[recipientId]
+    }
 const userSocketmap={};
+
+
 io.on("connection",(socket)=>{
 console.log("user connected " + socket.id);
 

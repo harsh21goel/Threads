@@ -44,6 +44,31 @@ const MessageContainer = () => {
     },[socket,messages])
 
     useEffect(()=>{
+        const lastMessageFromOtherUser= messages.length && messages[messages.length-1].sender !== Currentuser._id
+        if (lastMessageFromOtherUser) {
+            socket.emit("markMessageAsSeen",{
+                conversationId: selectedConversation._id,
+                userId: selectedConversation.userId
+            })
+        }
+        socket.on("messagesSeen",({conversationId})=>{
+        if (selectedConversation._id=== conversationId) {
+            setmessages(prev =>{
+                const updatedMessage= prev.map(mssg=>{
+                    if (!mssg.seen) {
+                        return {
+                            ...mssg,
+                            seen: true
+                        }
+                    }
+                    return mssg
+                })
+                return updatedMessage
+            })
+        }
+        })
+    },[socket,Currentuser._id,messages,selectedConversation])
+    useEffect(()=>{
         
         mssgEnfRef.current?.scrollIntoView({ behavior: "smooth" });
     },[messages])

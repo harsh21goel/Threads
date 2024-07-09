@@ -4,8 +4,14 @@ const messageSchema= new mongoose.Schema(
 {
  conversationId: {type: mongoose.Schema.Types.ObjectId,ref: "conversation"},
  sender: {type: mongoose.Schema.Types.ObjectId,ref: "User"},
- text: {type: String}
+ text: {type: String},
+ seen:{
+    type: Boolean,
+    default: false
+ },
 },
+
+
 {timestamps:true}
 )
 

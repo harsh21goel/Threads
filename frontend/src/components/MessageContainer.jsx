@@ -20,10 +20,13 @@ const MessageContainer = () => {
     const mssgEnfRef= useRef()
     useEffect(()=>{
         socket.on("newMessage",(message)=>{
+            if (selectedConversation._id === message.conversationId)  {
             setmessages((prevmssg)=>[...prevmssg,message])
+                
+            }
             setConversation((prev)=>{
                 const updatedConvs= prev.map((conversation)=>{
-            if (conversation._id=== selectedConversation._id) {
+            if (conversation._id=== message.conversationId) {
                 return{
                     ...conversation,
                                         lastmessage:{

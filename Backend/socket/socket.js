@@ -2,7 +2,8 @@ import{Server} from "socket.io"
 import http from "http"
 import express from "express"
 import message from "../models/messageModel.js"
-import { truncate } from "fs/promises"
+
+import Conversation from "../models/coversationModel.js"
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server,{
@@ -29,6 +30,7 @@ io.emit("getOnlineUsers", Object.keys(userSocketmap))
 socket.on("markMessageAsSeen", async({conversationId,userId}) => {
     try {
         await message.updateMany({conversationId: conversationId, seen:false},{$set:{seen:true}})
+        await Conversation.updateOne({_id: conversationId},{$set:{"lastmessage.seen":true}})
         io.to(userSocketmap[userId]).emit("messagesSeen",{conversationId})
     } catch (error) {
         console.log(error);

@@ -18,6 +18,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { conversationAtom, selectedConversationAtom } from "../atoms/ConversationAtom";
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
+
 function ChatPage() {
   const showtoast = useShowToast();
   const [loadingconversations, setloadingConversations] = useState(true);
@@ -27,6 +28,27 @@ function ChatPage() {
   const [selectedConversation, setselectedConversation] = useRecoilState(selectedConversationAtom)
   const currentuser = useRecoilValue(userAtom)
   const {onlineusers,socket}= useSocket()
+useEffect(()=>{
+  socket?.on("messagesSeen", ({conversationId})=>{
+      setconversations(prev =>{
+        const updatedConv=prev.map((conversation) =>{
+          if(conversation._id===conversationId){
+            return{
+             ...conversation,
+              lastMessage:{
+                ...conversation.lastMessage,
+                seen:true
+              }
+            }
+          }
+          return conversation
+        })
+        return updatedConv
+      })
+  })
+},[socket,setconversations])
+
+
   useEffect(() => {
     const getConversation = async () => {
       try {

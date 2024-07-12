@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import UserHeader from "../components/UserHeader";
 import { useParams } from "react-router-dom";
-import useshowToast from "../Hooks/useshowToast";
+import useshowToast from "../hooks/useshowToast";
 import { Spinner, Flex } from "@chakra-ui/react";
 import Post from "../components/Post";
-import useGetUserProfile from "../Hooks/useGetUserProfile";
+
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/Postatom";
+import useGetUserProfile from "../hooks/useGetUserProfile";
 function UserPage() {
   const showtoast = useshowToast();
   const { username } = useParams();

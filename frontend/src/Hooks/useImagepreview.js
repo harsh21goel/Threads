@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import useshowToast from "./useshowToast"
-function useImagepreview() {
+function useImagePreview() {
     const [imageUrl, setimageUrl] = useState(null)
     const showtoast=useshowToast()
     const handleImageChange=(e)=>{
@@ -23,4 +23,4 @@ function useImagepreview() {
   return {handleImageChange,imageUrl,setimageUrl}
 }
 
-export default useImagepreview
+export default useImagePreview

@@ -14,8 +14,8 @@ import { useState, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import userAtom from '../atoms/userAtom';
-import useshowToast from '../Hooks/useshowToast';
-import useImagepreview from '../Hooks/useImagepreview';
+import useshowToast from '../hooks/useshowToast';
+import useImagepreview from '../hooks/useImagePreview';
 
 
 export default function UpdateProfilePage() {

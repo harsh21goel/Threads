@@ -16,7 +16,7 @@ import { useSetRecoilState } from "recoil";
 import authScreenatom from "../atoms/Authatom";
 import userAtom from "../atoms/userAtom";
 import { useState } from "react";
-import useshowToast from "../Hooks/useshowToast";
+import useshowToast from "../hooks/useshowToast";
 export default function SimpleCard() {
   const setAuthscreen = useSetRecoilState(authScreenatom);
   const setUser = useSetRecoilState(userAtom);

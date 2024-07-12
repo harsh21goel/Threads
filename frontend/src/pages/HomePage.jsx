@@ -1,6 +1,6 @@
 import {  Flex ,Spinner} from '@chakra-ui/react'
 import React, { useEffect,useState } from 'react'
-import useshowToast from '../Hooks/useshowToast'
+import useshowToast from '../hooks/useshowToast'
 import Post from '../components/Post'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import postsAtom from '../atoms/Postatom'

@@ -14,9 +14,9 @@ import { formatDistanceToNow } from "date-fns";
 
 import Actions from "../components/Action";
 import Comment from "../components/Comment";
-import useGetUserProfile from "../Hooks/useGetUserProfile";
+import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useNavigate, useParams } from "react-router-dom";
-import useshowToast from "../Hooks/useshowToast";
+import useshowToast from "../hooks/useshowToast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/Postatom";

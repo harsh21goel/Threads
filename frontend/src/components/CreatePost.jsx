@@ -11,10 +11,10 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import useImagePreview from "../Hooks/useImagepreview"
+import useImagePreview from "../hooks/useImagePreview"
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import useshowToast from "../Hooks/useshowToast";
+import useshowToast from "../hooks/useshowToast";
 import postsAtom from "../atoms/Postatom";
 import { useParams } from "react-router-dom";
 function CreatePost() {

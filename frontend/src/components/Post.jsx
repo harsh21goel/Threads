@@ -13,7 +13,7 @@ import React, { useState,useEffect, } from "react";
 import { Link ,useNavigate} from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import Actions from "./Action";
-import useshowToast from "../Hooks/useshowToast";
+import useshowToast from "../hooks/useshowToast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { MdOutlineDelete } from "react-icons/md";

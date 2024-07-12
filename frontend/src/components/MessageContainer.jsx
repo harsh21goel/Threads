@@ -5,7 +5,7 @@ import MessageInput from './MessageInput'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { conversationAtom, selectedConversationAtom } from '../atoms/ConversationAtom'
 import { useEffect } from 'react'
-import useshowToast from '../Hooks/useshowToast'
+import useshowToast from '../hooks/useshowToast'
 import userAtom from '../atoms/userAtom'
 import { useSocket } from '../context/SocketContext'
 

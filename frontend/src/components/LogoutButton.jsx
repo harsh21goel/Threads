@@ -2,7 +2,7 @@ import React from 'react'
 import {Button} from "@chakra-ui/react"
 import { useSetRecoilState } from 'recoil'
 import userAtom from '../atoms/userAtom'
-import useshowToast from '../Hooks/useshowToast'
+import useshowToast from '../hooks/useshowToast'
 import { MdLogout } from "react-icons/md";
 import { useNavigate } from 'react-router-dom'
 function LogoutButton() {

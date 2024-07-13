@@ -29,7 +29,7 @@ const Message = ({OwnMessage, message}) => {
             {message.img &&(
                 <Flex mt={5} w={"200px"}>
                     <Image
-                    src='https://media.istockphoto.com/id/183821822/photo/say.jpg?s=612x612&w=0&k=20&c=kRmCjTzA9cq4amgRgeHkZsZuvxezUtC8wdDYfKg-mho='
+                    src={message.img}
                     alt='Message image'
                     borderRadius={4}
                     />
@@ -50,7 +50,7 @@ const Message = ({OwnMessage, message}) => {
              {message.img &&(
                 <Flex mt={5} w={"200px"}>
                     <Image
-                    src='https://media.istockphoto.com/id/183821822/photo/say.jpg?s=612x612&w=0&k=20&c=kRmCjTzA9cq4amgRgeHkZsZuvxezUtC8wdDYfKg-mho='
+                    src={message.img}
                     alt='Message image'
                     borderRadius={4}
                     />
